@@ -4,7 +4,7 @@
 // but you don't so you're going to write it from scratch:
 
 var stringifyJSON = function(obj) {
-  var result;
+  var result, key;
   // Check for unstringifiable values first
   if (typeof obj === 'undefined' || typeof obj === 'function') {
     result = '';
@@ -23,7 +23,7 @@ var stringifyJSON = function(obj) {
   } else if (typeof obj === 'object') {
     result = '{';
     var count = 0;
-    for (var key in obj) {
+    for (key in obj) {
       if (typeof obj[key] !== 'undefined' && typeof obj[key] !== 'function') {
         result += stringifyJSON(key) + ':' + stringifyJSON(obj[key]) + ',';  
         count++;
