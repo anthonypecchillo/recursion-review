@@ -4,7 +4,6 @@
 // but you're not, so you'll write it from scratch:
 var parseJSON = function(json) {
   var result;
-  console.log(json);
   // Arrays
   if (json[0] === '[') {
     result = [];
@@ -24,17 +23,31 @@ var parseJSON = function(json) {
     //result.push(parseJSON(json.substring(1)));
   } else if (json[0] === '{') {
     result = {};
-    if (json.indexOf(':') !== -1) {
+    var k = 1;
+    var l = 0;
+    var endObject = json.indexOf('}');
+    while (k < endObject) {
+      if (json.indexOf(':') === -1) {
+        break;
+      }
+
+      result[parseJSON(json.substring(k, json.indexOf(':')))] = parseJSON(json.substring(k + 1).indexOf(':') + 1 + k);
+      l = json.substring(k).indexOf(',');
+      if (l !== -1) {
+        k = l + k + 1;
+      } else {
+        break;
+      }
+    }
+    /*if (json.indexOf(':') !== -1) {
       result[parseJSON(json.substring(1, json.indexOf(':')))] = parseJSON(json.substring(json.indexOf(':') + 1));
-    }
+    }*/
+
     
+  } else if (json[0] === ' ') {
+    result = parseJSON(json.substring(1));
   } else if (json[0] === '"') {
-    result = json.substring(0, json.substring(1).indexOf('"') + 2);
-    console.log(result.length);
-    if (result.length === 0)
-    {
-      result = undefined;
-    }
+    result = json.substring(1, json.substring(1).indexOf('"') + 1);
 
   }
   return result;
@@ -42,6 +55,6 @@ var parseJSON = function(json) {
 
 /*
 i = 1
-[test1,test2,test3]
+[["test1","test2","test3"],"test4"]
 i = indexof ,  then i = 5
 */
